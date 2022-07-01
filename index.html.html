@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <title>Jaswanth_calci</title>
+    <style>
+*{
+  margin: 0;
+  padding: 2px;
+}
+.card {
+  background-color: rgb(239, 235, 241);
+  margin: 0 auto;
+  max-width: 300px;
+  text-align: center;
+  margin-top: 10px;
+  transition: 0.3s;
+  padding-top: 20px;
+  border-radius: 60px;
+  padding-bottom: 10px;
+  box-shadow: 0 16px 32px 0 rgb(231, 6, 235);
+}
+.card:hover{
+  box-shadow: 0 16px 32px 0 rgb(205, 227, 10);
+}
+.c-head #result {
+  color: rgb(246, 85, 85);  
+  width: 260px;
+  height: 60px;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: right;
+  padding: 0 5px;
+  letter-spacing: 2px;
+  border-radius: 70px;
+}
+.btn {
+  outline: none;
+  border-radius: 60px;
+  height: 40px;
+  width: 60px;
+  font-weight:900;
+  font-size: 20px;
+  background-color: #ffd0fd;
+  color:black;
+}
+.yes{
+  height: 20px;
+  width: 50px;
+}
+.btn:hover{
+  background-color:rgb(233, 238, 169);
+  box-shadow: 0 5px 5px 0 rgb(248, 183, 248) ;
+}
+div {
+  margin-top: 5px;
+}
+</style>
+<script>
+var stackArr=[];
+var top_stack=-1;
+//push function
+function push_stack(ele){
+stackArr[++top_stack]=ele;
+}
+//pop function
+function pop_stack(){
+return(stackArr[top_stack--]);
+}
+//return top element of a stack
+function topStack(stackArr){
+return(stackArr[stackArr.length-1]);
+}
+//checking is operator
+function isOperator(who){
+switch(who){
+case "^":
+case "*":
+case "/":
+case "+":
+case "-":
+case ")":
+case "(":
+        return 1;
+default: return 0;
+}
+}
+//checking precidence of the operator
+function prcd(op){
+switch(op){
+case "^":
+case "%":  
+case "$": //for square root ...
+return 4;
+case "*":
+case "/":
+return 3;
+case "+":
+case "-":
+return 2;
+case "(":
+case ")":
+return 1;
+default: return 0;
+}
+}
+//convert infix to postfix
+function InfixToPostfix(){
+var postfix=new Array();
+stackArr=[];
+push_stack("#");
+var ptr=0;
+infi=document.getElementById("result").value;
+infi=infi.split("");
+var ch;
+for(var i=0;i<infi.length;i++){
+ch=infi[i];
+var s=""
+if(isOperator(ch)==0){
+	s=s+ch;
+postfix[ptr++]=ch;
+console.log("ch us",s)
+}
+else{
+	
+if(ch==")"){
+while(stackArr[top_stack]!="(" ){
+postfix[ptr++]=pop_stack();
+}
+pop_stack();
+}
+else{
+	
+if(ch=="("){
+push_stack(ch);
+}
+else{
+if(prcd(ch)>prcd(stackArr[top_stack])){
+push_stack(ch);
+}
+else{
+while((prcd(ch)<=prcd(stackArr[top_stack]) && top_stack>-1)){
+postfix[ptr++]=pop_stack();
+
+}
+push_stack(ch);
+}
+}
+}
+}
+}
+while(stackArr[top_stack]!="#"){
+postfix[ptr++]=pop_stack();
+}
+ var final = document.getElementById("result").value=postfix.join("");
+
+}
+function evaluatePostfix()
+{
+var exp=document.getElementById("result").value
+	console.log("exp is",exp)
+		let stack=[];
+		console.log(typeof(exp))
+		for(let i=0;i<exp.length;i++)
+		{
+			let c=exp[i];
+			console.log("c is",c,"i is",i)
+			if(! isNaN( parseInt(c) ))
+			stack.push(c.charCodeAt(0) - '0'.charCodeAt(0));
+			else
+			{
+				let val1 = stack.pop();
+				let val2 = stack.pop();
+				console.log(val1,val2,"are popping...")
+				switch(c)
+				{
+					case '+':
+					stack.push(val2+val1);
+					break;
+					case '-':
+					stack.push(val2- val1);
+					break;
+					case '/':
+					stack.push(val2/val1);
+					break;
+					case '*':
+					stack.push(val2*val1);
+					break;
+          case '^':
+          stack.push(val2**val1);
+          break;    
+          case '%':
+          stack.push((val2/100)*val1);
+          break;
+          case '$':
+          stack.push(Math.sqrt(val2))  
+			}
+			}
+		}
+		console.log(stack)
+		document.getElementById("result").value=stack
+}
+// main 
+
+console.log(document.getElementById("submit"),"heejhg")
+var exp=document.getElementById("submit1").value;
+console.log(document.getElementById("submit"),"heejhg")
+document.getElementById("finalresult").value
+
+  function clearIt(){
+    console.log("sjhakjh")
+    var screenTxt = document.getElementById("result").value="";
+  }
+  function powerIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"^"
+    }
+    function percentIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"%"
+    var somevalue = screenTxt/100 
+    console.log(somevalue)
+    }
+    function divideIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"/"
+    }
+    function sevenIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"7"
+    }
+    function eigthIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"8"
+    }
+    function nineIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"9"
+    }
+    function multipleIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"*"
+    }
+    function fourIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"4"
+    }
+    function fiveIt(){
+    console.log("5")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"5"
+    }
+    function sixIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"6"
+    }
+    function minusIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"-"
+    }
+    function oneIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"1"
+    }
+    function twoIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"2"
+    }
+    function threeIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"3"
+    }
+    function plusIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"+"
+    }
+    function zeroIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"0"
+    }
+    function dotIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"."
+    }
+    function deleteIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt.slice(0,-1)
+      }
+      function openingbrackets(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"("
+    }  
+    function closingbrackets(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+")"
+    }
+    function squarerootIt(){
+    console.log("shdfjshd")
+    var screenTxt = document.getElementById("result").value;
+    var displayTxt = document.getElementById("result").value=screenTxt+"$"
+    }
+</script>
+
+</head>
+  </head>
+  <body style="background-color: goldenrod;">
+    <h1 style="text-align: center; color:#cef0aa;font-family:Georgia, 'Times New Roman', Times, serif">CALCUATOR</h1>
+    <div class="card">
+      <div class="c-head">
+        <input type="text" id="result" maxlength="15" placeholder="enter here.."></input>
+      </div>
+      <p style="font-weight:bold ;font-size: x-large;">--------------------------------</p>
+      <div class="c-body">
+        <div>
+          <input type="button" value="c" class="btn" onclick="clearIt()"></input>
+          <input type="button" value="^" class="btn" onclick="powerIt()"></input>
+          <input type="button" value="sqrt" class="btn" onclick="squarerootIt()"></input>
+          <input type="checkbox" value="InfixtoPostfix" class="yes" onclick="InfixToPostfix()" id=""></input>
+        </div>
+        <div>
+          <input type="button" value="(" class="btn" onclick="openingbrackets()"></input>
+          <input type="button" value=")" class="btn" onclick="closingbrackets()"></input>
+          <input type="button" value="%" class="btn" onclick="percentIt()"></input>
+          <input type="button" value="/" class="btn btn style" onclick="divideIt()"></input>
+        </div>
+        
+       <div>
+         <input type="button" value="7" class="btn" onclick="sevenIt()"></input>
+         <input type="button" value="8" class="btn" onclick="eigthIt()"></input>
+         <input type="button" value="9" class="btn" onclick="nineIt()"></input>
+         <input type="button" value="*" class="btn btn style"onclick="multipleIt()"></input>
+       </div>
+       <div>
+         <input type="button" value="4" class="btn" onclick="fourIt()"></input>
+         <input type="button" value="5" class="btn" onclick="fiveIt()"></input>
+         <input type="button" value="6" class="btn" onclick="sixIt()"></input>
+         <input type="button" value="-" class="btn btn style" onclick="minusIt()"></input>
+       </div>
+       <div>
+         <input type="button" value="1" class="btn" onclick="oneIt()"></input>
+         <input type="button" value="2" class="btn" onclick="twoIt()"></input>
+         <input type="button" value="3" class="btn" onclick="threeIt()"></input>
+         <input type="button" value="+" class="btn btn style" onclick="plusIt()"></input>
+       </div>
+       <div>
+         <input type="button" value="0" class="btn" onclick="zeroIt()"></input>
+         <input type="button" value="." class="btn" onclick="dotIt()"></input>
+         <input type="button" value="DEL" class="btn" onclick="deleteIt()"></input>
+         <input type="button" value="=" class="btn" style="background-color:rgb(229, 127, 127) "onclick="evaluatePostfix()"></input>
+       </div>
+      </div>
+    </div>
+  </body>
+</html>
